@@ -32,9 +32,12 @@ kmeans.fit(points[:, [0, 1]])
 
 y_km = kmeans.fit_predict(points[:, [0, 1]])
 
-plot = 1  # change to 1 to plot fig.7L
+plot = 2  # change to 1 to plot fig.7L
 
 plt.scatter(points[y_km == 0, 0], points[y_km == 0, plot], s=30, c='red')
 plt.scatter(points[y_km == 1, 0], points[y_km == 1, plot], s=10, c='black')
 
 plt.show()
+
+# save labelled data in format: time, solar energy, normal or not
+np.savetxt("data-labelled.csv", np.column_stack((points, y_km))[:, [0, 2, 3]], delimiter=",")

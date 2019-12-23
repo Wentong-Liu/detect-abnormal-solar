@@ -18,3 +18,4 @@ def date2doy(year, month, day):
 def time2sec(time):
     hour, minute, second = time.split(':')
     return (int(hour) + 11 - 24 if int(hour) + 11 > 24 else int(hour) + 11) * 3600 + int(minute) * 60 + int(second)
+
