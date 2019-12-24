@@ -53,7 +53,7 @@ print(classification_report(y_test, y_pred))
 RBF Kernel
 """
 
-rbf_kernel = SVC(kernel='rbf', degree=8)
+rbf_kernel = SVC(kernel='rbf')
 rbf_kernel.fit(X_train, y_train)
 rbf_kernel.score(X_train, y_train)
 
@@ -65,7 +65,7 @@ print(classification_report(y_test, y_pred))
 """
 Sigmoid Kernel
 """
-sigmoid_kernel = SVC(kernel='sigmoid', degree=8)
+sigmoid_kernel = SVC(kernel='sigmoid')
 sigmoid_kernel.fit(X_train, y_train)
 sigmoid_kernel.score(X_train, y_train)
 
