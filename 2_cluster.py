@@ -39,5 +39,5 @@ plt.scatter(points[y_km == 1, 0], points[y_km == 1, plot], s=10, c='black')
 
 plt.show()
 
-# save labelled data in format: time, solar energy, normal or not
-np.savetxt("data-labelled.csv", np.column_stack((points, y_km))[:, [0, 2, 3]], delimiter=",")
+# save labelled data in format: time, diff, solar energy, normal or not
+np.savetxt("data-labelled.csv", np.column_stack((points, y_km))[:, [0, 1, 2, 3]], delimiter=",")

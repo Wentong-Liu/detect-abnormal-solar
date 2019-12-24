@@ -1,12 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 unused import
 from numpy import genfromtxt
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 
 
-def plot_svc_decision_function(model, ax=None, plot_support=True):
+def plot_svc_decision_function(model, ax=None):
     """Plot the decision function for a 2D SVC"""
     if ax is None:
         ax = plt.gca()
@@ -26,16 +27,15 @@ def plot_svc_decision_function(model, ax=None, plot_support=True):
                linestyles=['--', '-', '--'])
 
     # plot support vectors
-    if plot_support:
-        ax.scatter(model.support_vectors_[:, 0],
-                   model.support_vectors_[:, 1],
-                   s=300, linewidth=1, facecolors='none');
+    ax.scatter(model.support_vectors_[:, 0],
+               model.support_vectors_[:, 1],
+               s=300, linewidth=1, facecolors='none')
     ax.set_xlim(xlim)
     ax.set_ylim(ylim)
 
 
 data = genfromtxt('data-labelled.csv', delimiter=',')
-X_train, X_test, y_train, y_test = train_test_split(data[:, [0, 1]], data[:, [2]].ravel(), test_size=0.20)
+X_train, X_test, y_train, y_test = train_test_split(data[:, [0, 1, 2]], data[:, [3]].ravel(), test_size=0.20)
 
 """
 Polynomial Kernel
@@ -74,9 +74,34 @@ y_pred = sigmoid_kernel.predict(X_test)
 print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred))
 
-# plot
-plt.scatter(data[:, [0]], data[:, [1]], c=data[:, [2]], s=10, cmap='coolwarm')
-plot_svc_decision_function(rbf_kernel)
-plt.scatter(rbf_kernel.support_vectors_[:, 0], rbf_kernel.support_vectors_[:, 1],
-            s=300, lw=1, facecolors='none')
+# plot 2D
+# plt.scatter(data[:, [0]], data[:, [2]], c=data[:, [3]], s=10, cmap='coolwarm')
+# plot_svc_decision_function(rbf_kernel)
+# plt.show()
+
+"""
+Linear SVM
+"""
+linear = SVC(kernel='linear')
+linear.fit(X_train, y_train)
+y_pred = linear.predict(X_test)
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred))
+
+"""
+Plot 3D
+"""
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+xs = data[:, [0]]
+ys = data[:, [2]]
+zs = data[:, [1]]
+label = data[:, [3]]
+ax.scatter(xs[label == 0], ys[label == 0], zs[label == 0], marker='o')
+ax.scatter(xs[label == 1], ys[label == 1], zs[label == 1], marker='^')
+ax.set_xlabel('Time')
+ax.set_ylabel('Energy')
+ax.set_zlabel('Diff')
+
 plt.show()
